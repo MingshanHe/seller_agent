@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' file: data: https:; media-src 'self' file:; style-src 'self' 'unsafe-inline'; script-src 'self'" />
+  <title>Seller Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">SA</div>
+      <div>
+        <div class="brand-name">Seller Agent</div>
+        <div class="brand-sub" id="ver">TikTok Shop 日本</div>
+      </div>
+    </div>
+    <nav id="nav">
+      <a data-page="home" class="active">总览</a>
+      <a data-page="listing">商品上架</a>
+      <a data-page="video">视频</a>
+      <a data-page="orders">订单与货源</a>
+      <a data-page="accounts">账号矩阵</a>
+      <a data-page="settings">设置</a>
+      <a data-page="logs">日志</a>
+    </nav>
+    <div class="side-foot" id="sideStatus"></div>
+  </aside>
+
+  <main id="main">
+    <!-- 总览 -->
+    <section data-view="home" class="view active">
+      <h1>总览</h1>
+      <div class="grid4" id="statusCards"></div>
+      <div class="card">
+        <h2>粘贴货源链接上架</h2>
+        <p class="muted">支持 1688、淘宝、天猫、拼多多。也可以直接在飞书里把链接发给机器人。</p>
+        <div class="row">
+          <input id="homeLink" placeholder="https://detail.1688.com/offer/xxxx.html" class="grow" />
+          <select id="homeAccount"></select>
+          <button class="primary" id="homeLinkBtn">开始上架</button>
+        </div>
+        <div id="homeLinkMsg" class="msg"></div>
+      </div>
+      <div class="card"><h2>最近通知 <span class="muted small">（和飞书里收到的一样）</span></h2><div id="notices" class="notice-list"></div></div>
+      <div class="grid2">
+        <div class="card"><h2>数量</h2><div id="counts"></div></div>
+        <div class="card"><h2>上手清单</h2><ol class="checklist" id="checklist"></ol></div>
+      </div>
+    </section>
+
+    <!-- 商品上架 -->
+    <section data-view="listing" class="view">
+      <div class="head-row">
+        <h1>商品上架</h1>
+        <div class="row">
+          <button id="openSourceBrowser">打开货源浏览器（登录 1688）</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="row">
+          <input id="listLink" placeholder="粘贴货源链接" class="grow" />
+          <select id="listAccount"></select>
+          <button class="primary" id="listLinkBtn">开始上架</button>
+        </div>
+        <div id="listLinkMsg" class="msg"></div>
+        <details class="mt"><summary>最近取数任务</summary><div id="captures"></div></details>
+      </div>
+      <div class="filters" id="draftFilters">
+        <button data-f="all" class="chip on">全部</button>
+        <button data-f="awaiting_manual" class="chip">待发布</button>
+        <button data-f="awaiting_approval" class="chip">待批准</button>
+        <button data-f="manual_published" class="chip">已发布</button>
+        <button data-f="rejected" class="chip">已放弃</button>
+      </div>
+      <div id="drafts"></div>
+    </section>
+
+    <!-- 视频 -->
+    <section data-view="video" class="view">
+      <div class="head-row">
+        <h1>视频</h1>
+        <div class="row">
+          <select id="videoAccount"></select>
+          <button class="primary" id="addVideo">添加本地视频</button>
+        </div>
+      </div>
+      <p class="muted">飞书里直接把视频发给机器人也可以。每个视频选“挂车”（关联已上架商品）或“曝光”（不挂车，用来涨粉引流），Claude 生成日文文案和话题。点“辅助发布”会打开该账号的 TikTok Studio，自动放入视频并复制文案，最后由你确认发布。</p>
+      <div class="filters" id="videoFilters">
+        <button data-f="all" class="chip on">全部</button>
+        <button data-f="awaiting_info" class="chip">待选择用途</button>
+        <button data-f="ready" class="chip">待发布</button>
+        <button data-f="published" class="chip">已发布</button>
+      </div>
+      <div id="videos"></div>
+    </section>
+
+    <!-- 订单与货源 -->
+    <section data-view="orders" class="view">
+      <h1>订单与货源</h1>
+      <div class="card">
+        <h2>出单查货源</h2>
+        <p class="muted">半自动模式没有订单推送。出单后输入 Seller SKU 编码（如 1a2b3c4d-1）或商品关键词，查到货源链接和成本去 1688 下单。</p>
+        <div class="row">
+          <input id="lookupQ" placeholder="SKU 编码或关键词" class="grow" />
+          <button class="primary" id="lookupBtn">查询</button>
+        </div>
+        <div id="lookupResult"></div>
+      </div>
+      <div class="card">
+        <h2>采购任务（接口模式）</h2>
+        <p class="muted">店铺授权 TikTok 接口后，订单会自动生成采购任务。</p>
+        <div id="tasks"></div>
+      </div>
+    </section>
+
+    <!-- 账号矩阵 -->
+    <section data-view="accounts" class="view">
+      <div class="head-row">
+        <h1>账号矩阵</h1>
+        <button class="primary" id="addAccount">添加账号</button>
+      </div>
+      <p class="muted">每个账号有独立的浏览器登录状态，互不影响。店铺号用来上架和挂车，达人号只发曝光视频。先用一个账号测试，跑通后再加。</p>
+      <div id="accountList"></div>
+      <div class="card">
+        <h2>货源浏览器</h2>
+        <p class="muted">取数用的浏览器。先在这里登录 1688 / 淘宝，之后发链接就能自动读取。遇到验证码时也在这里处理。窗口菜单里有“★ 把当前页上架”。</p>
+        <div class="row">
+          <button id="srcLogin1688">登录 1688</button>
+          <button id="srcLoginTaobao">登录淘宝</button>
+          <button class="ghost" id="srcClear">清除货源登录</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 设置 -->
+    <section data-view="settings" class="view">
+      <div class="head-row">
+        <h1>设置</h1>
+        <button class="primary" id="saveSettings">保存并重启引擎</button>
+      </div>
+      <div id="settingsMsg" class="msg"></div>
+      <form id="settingsForm"></form>
+      <div class="card">
+        <h2>定价参数 <span class="muted small">pricing.jp.json</span></h2>
+        <p class="muted">佣金、运费、利润率等。改完点保存，格式不对不会保存。</p>
+        <textarea id="pricingText" rows="16" spellcheck="false" class="mono"></textarea>
+        <div class="row mt"><button id="savePricing">保存定价参数</button><span id="pricingMsg" class="msg"></span></div>
+      </div>
+    </section>
+
+    <!-- 日志 -->
+    <section data-view="logs" class="view">
+      <div class="head-row">
+        <h1>日志</h1>
+        <div class="row"><button id="openLog">打开日志文件</button><button id="openData">打开数据目录</button></div>
+      </div>
+      <div class="tabs" id="logTabs"><button data-t="logs" class="chip on">运行日志</button><button data-t="audit" class="chip">操作记录</button></div>
+      <pre id="logBox" class="logbox"></pre>
+    </section>
+  </main>
+
+  <div id="toast"></div>
+  <dialog id="dlg"><form method="dialog" id="dlgForm"></form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{
+  "name": "seller-agent",
+  "productName": "Seller Agent",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "TikTok Shop 日本跨境 POP 店桌面智能体：链接上架、视频挂车、飞书交互、多账号矩阵",
+  "author": "MingshanHe",
+  "license": "UNLICENSED",
+  "main": "dist/main.cjs",
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs && electron .",
+    "start": "electron .",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.ts",
+    "demo": "node --disable-warning=ExperimentalWarning scripts/demo.ts",
+    "typecheck": "tsc --noEmit",
+    "dist": "node scripts/build.mjs && electron-builder --win nsis --x64 --publish never",
+    "release": "node scripts/build.mjs && electron-builder --win nsis --x64 --publish always"
+  },
+  "dependencies": {
+    "@larksuiteoapi/node-sdk": "^1.76.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "electron": "^45.2.2",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.28.2",
+    "typescript": "^5.6.0"
+  },
+  "build": {
+    "appId": "com.mingshanhe.selleragent",
+    "productName": "Seller Agent",
+    "directories": { "output": "release", "buildResources": "build" },
+    "files": ["dist/**/*", "!dist/**/*.map", "renderer/**/*", "config/**/*", "build/icon.png", "package.json"],
+    "extraResources": [{ "from": "config", "to": "config" }],
+    "win": { "target": ["nsis"], "icon": "build/icon.png", "artifactName": "SellerAgent-Setup-${version}.${ext}" },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "shortcutName": "Seller Agent"
+    },
+    "publish": [{ "provider": "github", "owner": "MingshanHe", "repo": "seller_agent" }]
+  }
+}

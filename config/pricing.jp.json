@@ -1,0 +1,75 @@
+{
+  "_comment": "日本站定价参数。来源标注见 README。比例都用小数，例如 0.15 表示 15%。",
+  "logistics": {
+    "volumetricDivisor": 8000,
+    "firstWeightGrams": 500,
+    "firstFeeCny": 36,
+    "stepWeightGrams": 500,
+    "stepFeeCny": 18,
+    "defaultDomesticCny": 5,
+    "lastMileJpy": 350
+  },
+  "rates": {
+    "refundLoss": 0.03,
+    "affiliate": 0,
+    "fxBuffer": 0.02
+  },
+  "margin": { "min": 0.15, "target": 0.30 },
+  "market": {
+    "minComparables": 5,
+    "targetPercentile": 40,
+    "rejectAbovePercentile": 75,
+    "assumedShippingJpy": 600
+  },
+  "tax": { "reserveAboveJpy": 10000, "reserveRate": 0.0909090909 },
+  "limits": { "minPriceJpy": 1, "maxPriceJpy": 500000 },
+  "inventory": { "defaultStock": 20 },
+  "commission": {
+    "fallback": 0.12,
+    "categories": {
+      "Automotive & Motorcycle": 0.07,
+      "Computers & Office Equipment": 0.07,
+      "Food & Beverages": 0.07,
+      "Household Appliances": 0.07,
+      "Phones & Electronics": 0.07,
+      "Furniture": 0.07,
+      "Home Improvement": 0.07,
+      "Pre-Owned": 0.07,
+      "Books, Magazines & Audio": 0.09,
+      "Collectibles": 0.09,
+      "Home Supplies": 0.09,
+      "Kitchenware": 0.09,
+      "Textiles & Soft Furnishings": 0.09,
+      "Tools & Hardware": 0.09,
+      "Baby & Maternity": 0.10,
+      "Beauty & Personal Care": 0.10,
+      "Health": 0.10,
+      "Jewelry Accessories & Derivatives": 0.10,
+      "Shoes": 0.10,
+      "Sports & Outdoor": 0.10,
+      "Toys & Hobbies": 0.10,
+      "Fashion Accessories": 0.12,
+      "Kids' Fashion": 0.12,
+      "Luggage & Bags": 0.12,
+      "Menswear & Underwear": 0.12,
+      "Modest Fashion": 0.12,
+      "Pet Supplies": 0.12,
+      "Womenswear & Underwear": 0.12
+    },
+    "exceptions": {
+      "Beer, Wine & Spirits": 0.12,
+      "Towels": 0.07,
+      "Household Cleaners": 0.07,
+      "Kitchen Rolls & Wipes": 0.07,
+      "Sponges & Scouring Pads": 0.07,
+      "Tissues & Napkins": 0.07,
+      "Toilet Paper & Wipes": 0.07,
+      "Trash Bags": 0.07,
+      "Infant Formula": 0.07,
+      "Growth Milk Formula": 0.07,
+      "Personal Care Appliances": 0.07,
+      "Dog & Cat Food": 0.07,
+      "Dog & Cat Litter": 0.07
+    }
+  }
+}
